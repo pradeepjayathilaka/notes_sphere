@@ -23,7 +23,7 @@ class NoteService {
     Note(
       id: const Uuid().v4(),
       title: "Book reconmendations",
-      category: "Work",
+      category: "Hobby",
       content:
           "Recently read 'Sapiens' by tuval Noah Marari,which offered fascinating insights into the history of humankind .Also enjoyed 'Atomic Habits' by james Clear,a practical guide to building  good habits and breaking bad ones",
       date: DateTime.now(),
@@ -64,5 +64,18 @@ class NoteService {
       }
     }
     return notesBycategory;
+  }
+
+  //method to get the notes according to the category
+  Future<List<Note>> getNotesByCategoryName(String category) async {
+    final dynamic allNotes = await _myBox.get("notes");
+    final List<Note> notes = [];
+
+    for (final note in allNotes) {
+      if (note.category == category) {
+        notes.add(note);
+      }
+    }
+    return notes;
   }
 }
