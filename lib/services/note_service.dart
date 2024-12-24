@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:notes_sphere/models/note_model.dart';
 import 'package:uuid/uuid.dart';
@@ -77,5 +78,29 @@ class NoteService {
       }
     }
     return notes;
+  }
+
+  //method  to update /edit a note
+  Future<void> updatenote(Note note) async {
+    try {
+      final dynamic allNotes = await _myBox.get("notes");
+      final int index = allNotes.indexWhere((element) => element.id == note.id);
+      allNotes[index] = note;
+      await _myBox.put("notes", allNotes);
+    } catch (err) {
+      print(err.toString());
+    }
+  }
+
+  //method to delete a note
+  Future<void> deleteNoteById(String id) async {
+    try {
+      final dynamic allNotes = await _myBox.get("notes");
+      final List<Note> updatedNotes =
+          allNotes.removewhere((element) => element.id != id).toList();
+      await _myBox.put("notes", updatedNotes);
+    } catch (err) {
+      print(err.toString());
+    }
   }
 }
