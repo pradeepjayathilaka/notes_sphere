@@ -33,7 +33,6 @@ class _NotesByCategoryState extends State<NotesByCategory> {
         await noteService.getNotesByCategoryName(widget.category);
     setState(() {
       notelist = loadedNotes;
-      print("Loaded notes: ${notelist.length}");
     });
   }
 
