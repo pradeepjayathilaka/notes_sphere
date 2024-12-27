@@ -54,6 +54,17 @@ class NoteService {
     return [];
   }
 
+//method to add to  new note
+  Future<void> addNote(Note note) async {
+    try {
+      final dynamic allNotes = await _myBox.get("notes");
+      allNotes.add(note);
+      await _myBox.put("notes", allNotes);
+    } catch (err) {
+      print(err.toString());
+    }
+  }
+
   //loop throught all notes and create an object where the key is the category and the value is the notes in that category
   Map<String, List<Note>> getNotesByCategoryMap(List<Note> allNotes) {
     final Map<String, List<Note>> notesBycategory = {};
@@ -93,12 +104,12 @@ class NoteService {
   }
 
   //method to delete a note
-  Future<void> deleteNoteById(String id) async {
+  Future<void> deleteNote(String noteId) async {
     try {
       final dynamic allNotes = await _myBox.get("notes");
-      final List<Note> updatedNotes =
-          allNotes.removewhere((element) => element.id != id).toList();
-      await _myBox.put("notes", updatedNotes);
+
+      allNotes.removeWhere((element) => element.id == noteId);
+      await _myBox.put("notes", allNotes);
     } catch (err) {
       print(err.toString());
     }
