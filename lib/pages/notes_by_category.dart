@@ -116,6 +116,12 @@ class _NotesByCategoryState extends State<NotesByCategory> {
                                 notelist.removeAt(index);
                               });
                             },
+                            viewSingleNote: () {
+                              AppRouter.router.push(
+                                "/single-note",
+                                extra: notelist[index],
+                              );
+                            },
                           );
                         },
                       ),

@@ -7,12 +7,15 @@ class NoteCategoryCard extends StatefulWidget {
   final String notContent;
   final Future Function() removeNote;
   final Future Function() editNote;
-  const NoteCategoryCard(
-      {super.key,
-      required this.notTitle,
-      required this.notContent,
-      required this.removeNote,
-      required this.editNote});
+  final void Function() viewSingleNote;
+  const NoteCategoryCard({
+    super.key,
+    required this.notTitle,
+    required this.notContent,
+    required this.removeNote,
+    required this.editNote,
+    required this.viewSingleNote,
+  });
 
   @override
   State<NoteCategoryCard> createState() => _NoteCategoryCardState();
@@ -50,20 +53,27 @@ class _NoteCategoryCardState extends State<NoteCategoryCard> {
                 )
               ],
             ),
-            Text(
-              widget.notTitle,
-              style: AppTextStyles.appSubtitle,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-            Text(
-              widget.notContent,
-              style: AppTextStyles.appdescriptionSmallStyle.copyWith(
-                color: AppColors.kWhiteColor.withOpacity(0.5),
+            GestureDetector(
+              onTap: widget.viewSingleNote,
+              child: Column(
+                children: [
+                  Text(
+                    widget.notTitle,
+                    style: AppTextStyles.appSubtitle,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    widget.notContent,
+                    style: AppTextStyles.appdescriptionSmallStyle.copyWith(
+                      color: AppColors.kWhiteColor.withOpacity(0.5),
+                    ),
+                    maxLines: 6,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.left,
+                  ),
+                ],
               ),
-              maxLines: 6,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.left,
             )
           ],
         ),
