@@ -20,6 +20,13 @@ class _TodoPageState extends State<TodoPage>
   late List<Todo> incompletedTodos = [];
   late List<Todo> completedTodos = [];
   TodoService todoService = TodoService();
+
+  void dispose() {
+    _tabController.dispose();
+
+    super.dispose();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -30,18 +37,16 @@ class _TodoPageState extends State<TodoPage>
   void _checkIfUserIsNew() async {
     final bool isNewUser = await todoService.isNewUser();
     if (isNewUser) {
-      if (isNewUser) {
-        await todoService.CreateInitialTodos();
-      }
-      await _loadToDos();
+      await todoService.createInitialTodos();
     }
+    _loadToDos();
   }
 
   Future<void> _loadToDos() async {
     final List<Todo> loadedTodos = await todoService.loadTodos();
     setState(() {
       allTodos = loadedTodos;
-      print(allTodos.length);
+
       //incompleted todos
       incompletedTodos = allTodos.where((todo) => !todo.isDone).toList();
       //completed todos
@@ -93,9 +98,11 @@ class _TodoPageState extends State<TodoPage>
         children: [
           TodoTab(
             incompletedTodos: incompletedTodos,
-          ),
-          completedTab(
             completedTodos: completedTodos,
+          ),
+          CompletdTab(
+            completedTodos: completedTodos,
+            incompletedTodos: incompletedTodos,
           ),
         ],
       ),

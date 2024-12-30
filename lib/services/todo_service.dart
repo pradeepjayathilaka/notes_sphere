@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:notes_sphere/models/todo_model.dart';
 
@@ -31,7 +32,7 @@ class TodoService {
   }
 
   //method to create the initial todos if the box is empty
-  Future<void> CreateInitialTodos() async {
+  Future<void> createInitialTodos() async {
     if (_myBox.isEmpty) {
       await _myBox.put("todos", todos);
     }
@@ -44,5 +45,17 @@ class TodoService {
       return todos.cast<Todo>().toList();
     }
     return [];
+  }
+
+  //mark the todo as done
+  Future<void> markAsDone(Todo todo) async {
+    try {
+      final dynamic allTodos = await _myBox.get("todos");
+      final int index = allTodos.indexWhere((element) => element.id == todo.id);
+      allTodos[index] = todo;
+      await _myBox.put("todos", allTodos);
+    } catch (error) {
+      print(error.toString());
+    }
   }
 }
