@@ -58,4 +58,26 @@ class TodoService {
       print(error.toString());
     }
   }
+
+  //Method to add a note
+  Future<void> addTodo(Todo todo) async {
+    try {
+      final dynamic allTodos = await _myBox.get("todos");
+      allTodos.add(todo);
+      await _myBox.put("todos", allTodos);
+    } catch (error) {
+      print(error.toString());
+    }
+  }
+
+  //Method to delete a note
+  Future<void> deleteTodo(Todo todo) async {
+    try {
+      final dynamic allTodos = await _myBox.get("todos");
+      allTodos.remove(todo);
+      await _myBox.put("todos", allTodos);
+    } catch (error) {
+      print(error.toString());
+    }
+  }
 }
