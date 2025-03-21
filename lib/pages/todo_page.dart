@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:notes_sphere/helpers/snach_bar.dart';
 import 'package:notes_sphere/models/todo_model.dart';
+import 'package:notes_sphere/pages/todo_inharited_widget.dart';
 import 'package:notes_sphere/services/todo_service.dart';
 import 'package:notes_sphere/utils/colors.dart';
 import 'package:notes_sphere/utils/router.dart';
@@ -154,64 +155,68 @@ class _TodoPageState extends State<TodoPage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            AppRouter.router.go("/");
-          },
+    return ToDoData(
+      todos: allTodos,
+      onTodosChanged: _loadToDos,
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              AppRouter.router.go("/");
+            },
+          ),
+          bottom: TabBar(
+            controller: _tabController,
+            tabs: const [
+              Tab(
+                child: Text(
+                  "ToDo",
+                  style: AppTextStyles.appDescriptionLargeStyle,
+                ),
+              ),
+              Tab(
+                child: Text(
+                  "Completed",
+                  style: AppTextStyles.appDescriptionLargeStyle,
+                ),
+              )
+            ],
+          ),
         ),
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: const [
-            Tab(
-              child: Text(
-                "ToDo",
-                style: AppTextStyles.appDescriptionLargeStyle,
-              ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            openMesssageModel(context);
+          },
+          shape: RoundedRectangleBorder(
+            borderRadius: const BorderRadius.all(
+              Radius.circular(100),
             ),
-            Tab(
-              child: Text(
-                "Completed",
-                style: AppTextStyles.appDescriptionLargeStyle,
-              ),
-            )
+            side: BorderSide(
+              color: AppColors.kWhiteColor,
+              width: 2,
+            ),
+          ),
+          child: Icon(
+            Icons.add,
+            color: AppColors.kWhiteColor,
+            weight: 30,
+          ),
+        ),
+        body: TabBarView(
+          controller: _tabController,
+          children: [
+            TodoTab(
+              incompletedTodos: incompletedTodos,
+              completedTodos: completedTodos,
+            ),
+            CompletdTab(
+              completedTodos: completedTodos,
+              incompletedTodos: incompletedTodos,
+            ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          openMesssageModel(context);
-        },
-        shape: RoundedRectangleBorder(
-          borderRadius: const BorderRadius.all(
-            Radius.circular(100),
-          ),
-          side: BorderSide(
-            color: AppColors.kWhiteColor,
-            width: 2,
-          ),
-        ),
-        child: Icon(
-          Icons.add,
-          color: AppColors.kWhiteColor,
-          weight: 30,
-        ),
-      ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          TodoTab(
-            incompletedTodos: incompletedTodos,
-            completedTodos: completedTodos,
-          ),
-          CompletdTab(
-            completedTodos: completedTodos,
-            incompletedTodos: incompletedTodos,
-          ),
-        ],
       ),
     );
   }
